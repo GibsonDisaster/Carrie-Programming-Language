@@ -29,7 +29,7 @@ Functions, Classes, data types, loops, etc.
 
 * [Rust](https://www.rust-lang.org/en-US/) - The second compiler
 * [Python3](https://www.python.org/download/releases/3.0/) - What the compiler is written with
-* [Carrie and Lowell](Spotify) - When you need a good cry
+* [Carrie and Lowell] When you need a good cry
 
 ## Authors
 
@@ -41,4 +41,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Thank you to Cher
+* Thank you Cher
