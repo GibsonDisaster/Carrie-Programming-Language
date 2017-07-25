@@ -23,9 +23,9 @@ Compiler is a python script which takes a .cr file and converts it to Rust code,
   print("Hello World!"); This will print "Hello World!" to the console.
   
 ### Number Bindings
-  You can bind numbers to variables by typing number => variable_name.
+  You can bind numbers to variables by typing number => letter. (As of right now only single letter bindings are supported).
     Ex: 9 => x;
-        17 => age;
+        17 => a;
 
 ## Planned Features
 
