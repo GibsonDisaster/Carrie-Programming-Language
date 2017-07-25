@@ -19,7 +19,12 @@ Compiler is a python script which takes a .cr file and converts it to Rust code,
 
 ## Carrie Language Syntax
 
-As of right now there is only one thing you can do with Carrie, print strings. To do this simply type "print("Message")" (without the quotes) and where "Message" is any string.
+# Print Function
+  print("Hello World!"); This will print "Hello World!" to the console.
+  
+ # Number Bindings
+  You can bind numbers to variables by typing number => variable_name.
+    Ex: 9 => x
 
 ## Planned Features
 
