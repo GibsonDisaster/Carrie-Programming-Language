@@ -4,7 +4,8 @@ A general purpose programming language. Not anywhere near done. Named after the 
 
 ## Getting Started
 
-Compiler is not working yet.
+Compiler is not working yet. For the foreseable future after I get the compiler working, you will need to write your carrie
+code in Src.hs as to avoid the IO Monad and all the trouble that comes from the IO String type.
 
 ## How It Works
 
