@@ -1,3 +1,3 @@
 module Src(text) where
     text :: String
-    text = "print Hello print World"
+    text = "funcdec main print henlo/world funcend main"

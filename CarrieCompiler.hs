@@ -1,7 +1,9 @@
 -- {Compiler For Carrie Programming Language Version 0.0.1} --
-module CarrieCompiler(findToken, getIndex, addSpace, parsePairs, parseTokens) where
+module CarrieCompiler(findToken, getIndex, replace, parsePairs, parseTokens, tokenPairs) where
 
 import Data.List
+import System.IO
+
 findToken :: String -> [String] -> [(String, String)]
 findToken t arr
     | arr == [] = [("END", "END")]
@@ -14,7 +16,7 @@ getIndex n arr
     | otherwise = 0
 
 replace :: Char -> Char -> [Char] -> [Char]
-replace x y str = [if x == x then y else x | x <- str]
+replace z y str = [if x == z then y else x | x <- str]
 
 parseTokens :: [(String, String)] -> IO ()
 parseTokens [] = putStr ""
@@ -24,8 +26,21 @@ parseTokens (x:xs) = do
 
 parsePairs :: (String, String) -> IO ()
 parsePairs (x, y)
-    | x == "print" = putStrLn y
+    | x == "print" = do
+        f <- openFile "main.c" AppendMode
+        hPutStrLn f ("printf(" ++ "\"" ++ (replace '/' ' ' y) ++ "\"" ++ ");")
+        hClose f
+    | x == "funcdec" = do
+        f <- openFile "main.c" AppendMode
+        hPutStrLn f ("int " ++ y ++ "() {")
+        hClose f
+    | x == "funcend" = do
+        f <- openFile "main.c" AppendMode
+        hPutStrLn f "}"
+        hClose f
     | x == "END" || y == "END" = putStr ""
     | otherwise = putStrLn ("Error parsing token {" ++ x ++ " " ++ y ++ "}")
 
- 
+tokenPairs :: [String] -> [(String, String)]
+tokenPairs [] = []
+tokenPairs arr = [(head arr, head(tail arr))] ++ tokenPairs (drop 2 arr)
