@@ -13,8 +13,8 @@ getIndex n arr
     | length arr > 1 = head [y | (x, y) <- zip arr [0..length arr], x == n]
     | otherwise = 0
 
-addSpace :: Char -> Char -> [Char] -> [Char]
-addSpace x y str = [if x == x then y else x | x <- str]
+replace :: Char -> Char -> [Char] -> [Char]
+replace x y str = [if x == x then y else x | x <- str]
 
 parseTokens :: [(String, String)] -> IO ()
 parseTokens [] = putStr ""
