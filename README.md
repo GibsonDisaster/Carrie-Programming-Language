@@ -6,9 +6,9 @@ the Sufjan Stevens album "Carrie and Lowell".
 
 ## Getting Started
 
-Compiler is not working yet. For the foreseable future after I get the compiler working, you will need to 
-write your carrie code in Src.hs as to avoid the IO Monad and all the trouble that comes from the IO String 
-type.
+Load up Start.hs in ghci and run the main function after you have written your code in Src.txt. You must have gcc installed 
+and on your system path for this to work. You will need to write your carrie code in Src.hs as to avoid the IO Monad and all 
+the trouble that comes from the IO String type.
 
 ### Hello World Carrie
 
