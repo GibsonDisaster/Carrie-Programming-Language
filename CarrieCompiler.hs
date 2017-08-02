@@ -4,6 +4,7 @@ module CarrieCompiler(findToken, getIndex, replace, parsePairs, parseTokens, tok
 import Data.List
 import System.IO
 
+-- Deprecated code I can't bare to delete {
 findToken :: String -> [String] -> [(String, String)]
 findToken t arr
     | arr == [] = [("END", "END")]
@@ -14,6 +15,7 @@ getIndex :: Eq a => a -> [a] -> Int
 getIndex n arr
     | length arr > 1 = head [y | (x, y) <- zip arr [0..length arr], x == n]
     | otherwise = 0
+-- }
 
 replace :: Char -> Char -> [Char] -> [Char]
 replace z y str = [if x == z then y else x | x <- str]
@@ -34,8 +36,17 @@ parsePairs (x, y)
         f <- openFile "main.c" AppendMode
         hPutStrLn f ("int " ++ y ++ "() {")
         hClose f
+    | x == "intdec" = do
+        f <- openFile "main.c" AppendMode
+        hPutStr f ("int " ++ y ++ " = ")
+        hClose f
+    | x == "assign" = do
+        f <- openFile "main.c" AppendMode
+        hPutStrLn f (y ++ ";")
+        hClose f
     | x == "funcend" = do
         f <- openFile "main.c" AppendMode
+        hPutStrLn f "return 0;"
         hPutStrLn f "}"
         hClose f
     | x == "END" || y == "END" = putStr ""

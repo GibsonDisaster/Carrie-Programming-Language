@@ -18,6 +18,11 @@ the compiler will automatically replace all "/" with spaces. The final piece of 
 The whole program looks like:
 "funcdec main print Hello/World funcend main"
 
+### Variables
+
+You can declare a variable name "age" and assign it the value 17 by writing: 
+"intdec age assign 17"
+
 ## How It Works
 
 Compiler is written in Haskell using only standard libraries and functions written by myself. No external libraries required
