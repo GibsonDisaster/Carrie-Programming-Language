@@ -2,15 +2,17 @@ module Start(main) where
 
 import Data.List
 import System.IO
+import System.Process
 import Src
 import CarrieCompiler
 
+main :: IO ()
 main = do
+    putStrLn "-- Carrie Compiler Version 0.0.3 --"
     let tokens = tokenPairs (words text)
     c <- openFile "main.c" WriteMode
-    hPutStr c ""
+    hPutStr c "#include <stdio.h>\n"
     hClose c
-    f <- openFile "main.c" AppendMode
-    hPutStrLn f "#include <stdio.h>"
-    hClose f
     parseTokens tokens
+    r <- createProcess (proc "gcc" ["main.c"])
+    putStrLn "Compilation Complete!"

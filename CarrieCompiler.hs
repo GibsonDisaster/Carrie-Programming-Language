@@ -1,4 +1,4 @@
--- {Compiler For Carrie Programming Language Version 0.0.1} --
+-- {Compiler For Carrie Programming Language Version 0.0.3} --
 module CarrieCompiler(findToken, getIndex, replace, parsePairs, parseTokens, tokenPairs) where
 
 import Data.List
@@ -36,9 +36,21 @@ parsePairs (x, y)
         f <- openFile "main.c" AppendMode
         hPutStrLn f ("int " ++ y ++ "() {")
         hClose f
+    | x == "bind" = do
+        f <- openFile "main.c" AppendMode
+        hPutStr f (y ++ " = ")
+        hClose f
+    | x == "addint" = do
+        f <- openFile "main.c" AppendMode
+        hPutStr f (y ++ " + ")
+        hClose f
+    | x == "with" = do
+        f <- openFile "main.c" AppendMode
+        hPutStr f (y ++ ";\n")
+        hClose f
     | x == "intdec" = do
         f <- openFile "main.c" AppendMode
-        hPutStr f ("int " ++ y ++ " = ")
+        hPutStr f ("int " ++ y ++ ";\n")
         hClose f
     | x == "assign" = do
         f <- openFile "main.c" AppendMode
@@ -49,7 +61,8 @@ parsePairs (x, y)
         hPutStrLn f "return 0;"
         hPutStrLn f "}"
         hClose f
-    | x == "END" || y == "END" = putStr ""
+    | x == "CMT" = putStr ""
+    | x == "END" = putStr ""
     | otherwise = putStrLn ("Error parsing token {" ++ x ++ " " ++ y ++ "}")
 
 tokenPairs :: [String] -> [(String, String)]

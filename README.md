@@ -1,6 +1,8 @@
 # Carrie Programming Language
 
-A general purpose programming language. Not anywhere near done. Named after the Sufjan Stevens album "Carrie and Lowell".
+This is not an enjoyable language to write in. Take the most ugly weird Pascal code and then put it all into one String 
+with made of a different pairs of functions and arguments. Completely unreadable. Not anywhere near done. Named after 
+the Sufjan Stevens album "Carrie and Lowell".
 
 ## Getting Started
 
@@ -22,6 +24,28 @@ The whole program looks like:
 
 You can declare a variable name "age" and assign it the value 17 by writing: 
 "intdec age assign 17"
+
+### Bindings and Adding Ints
+
+You can bind the outcome of the addition of two ints by using the bind command with the bindings name followed by 
+addint followed by the first number followed by with followed by the second number.
+
+bind binding_name addint num1 with num2
+
+example:
+
+"bind z addint 5 with 100"
+
+z would equal 105
+
+### Commenting Code
+
+You can comment in your code using the CMT key word followed by your comment (With each word seperated by a '/' instead
+of a space)
+
+example:
+
+"funcdec main intdec z CMT Just/initialized/z funcend main"
 
 ## How It Works
 
