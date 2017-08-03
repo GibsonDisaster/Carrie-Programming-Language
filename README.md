@@ -61,6 +61,14 @@ funcdec main(int:n)
 
 funcdec main(int:n+int:m+int:x)
 
+### Calling Functions
+
+Just type "funccall" followed by the function name with each argument seperated by a comma with NO SPACE in between.
+
+Ex:
+funccall main()
+funccall main(3,4,5)
+
 ## How It Works
 
 Compiler is written in Haskell using only standard libraries and functions written by myself. No external 
