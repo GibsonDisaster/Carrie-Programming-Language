@@ -1,4 +1,4 @@
-module Start(main) where
+module Start where
 
 import Data.List
 import System.IO
@@ -14,5 +14,5 @@ main = do
     hPutStr c "#include <stdio.h>\n"
     hClose c
     parseTokens tokens
-    r <- createProcess (proc "gcc" ["main.c"])
+    r <- createProcess (proc "gcc" ["main.c", "-o Carrie"])
     putStrLn "Compilation Complete!"

@@ -1,5 +1,5 @@
--- {Compiler For Carrie Programming Language Version 0.0.3} --
-module CarrieCompiler(findToken, getIndex, replace, parsePairs, parseTokens, tokenPairs) where
+-- {Compiler For Carrie Programming Language Version 0.0.4} --
+module CarrieCompiler where
 
 import Data.List
 import System.IO
@@ -20,6 +20,17 @@ getIndex n arr
 replace :: Char -> Char -> [Char] -> [Char]
 replace z y str = [if x == z then y else x | x <- str]
 
+argParser :: String -> String
+argParser str = [if x == ':' then ' ' else x | x <- str]
+
+getFuncName :: [Char] -> [Char]
+getFuncName str
+    | (head str) /= '(' = [(head str)] ++ getFuncName (tail str)
+    | otherwise = []
+
+getFuncArgs :: [Char] -> [Char]
+getFuncArgs str = init (drop (length (getFuncName str) + 1) str)
+
 parseTokens :: [(String, String)] -> IO ()
 parseTokens [] = putStr ""
 parseTokens (x:xs) = do
@@ -34,7 +45,7 @@ parsePairs (x, y)
         hClose f
     | x == "funcdec" = do
         f <- openFile "main.c" AppendMode
-        hPutStrLn f ("int " ++ y ++ "() {")
+        hPutStrLn f ("int " ++ (getFuncName y) ++ "(" ++ (replace '+' ',' (replace ':' ' ' (getFuncArgs y))) ++ ")" ++ " {")
         hClose f
     | x == "bind" = do
         f <- openFile "main.c" AppendMode
@@ -50,7 +61,7 @@ parsePairs (x, y)
         hClose f
     | x == "intdec" = do
         f <- openFile "main.c" AppendMode
-        hPutStr f ("int " ++ y ++ ";\n")
+        hPutStr f ("int " ++ y ++ " = ")
         hClose f
     | x == "assign" = do
         f <- openFile "main.c" AppendMode
@@ -60,6 +71,10 @@ parsePairs (x, y)
         f <- openFile "main.c" AppendMode
         hPutStrLn f "return 0;"
         hPutStrLn f "}"
+        hClose f
+    | x == "funccall" = do
+        f <- openFile "main.c" AppendMode
+        hPutStrLn f (y ++ ";")  
         hClose f
     | x == "CMT" = putStr ""
     | x == "END" = putStr ""

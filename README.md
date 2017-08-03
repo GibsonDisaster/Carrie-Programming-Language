@@ -6,19 +6,19 @@ the Sufjan Stevens album "Carrie and Lowell".
 
 ## Getting Started
 
-Load up Start.hs in ghci and run the main function after you have written your code in Src.txt. You must have gcc installed 
-and on your system path for this to work. You will need to write your carrie code in Src.hs as to avoid the IO Monad and all 
-the trouble that comes from the IO String type.
+Compiler is not working yet. For the foreseable future after I get the compiler working, you will need to 
+write your carrie code in Src.hs as to avoid the IO Monad and all the trouble that comes from the IO String 
+type.
 
 ### Hello World Carrie
 
-To write a Hello World program in Carrie, first declare a function called main by typing "funcdec main" into
+To write a Hello World program in Carrie, first declare a function called main by typing "funcdec main()" into
 the text function in Src.hs. Then type "print Hello/World" after that. "/" is how you write spaces in Carrie,
 the compiler will automatically replace all "/" with spaces. The final piece of code to write is 
 "funcend main". This ends the function called main.
 
 The whole program looks like:
-"funcdec main print Hello/World funcend main"
+"funcdec main() print Hello/World funcend main"
 
 ### Variables
 
@@ -47,15 +47,24 @@ example:
 
 "funcdec main intdec z CMT Just/initialized/z funcend main"
 
+### Declaring A Function That Takes Arguments
+
+#### Zero Argument Function
+
+funcdec main()
+
+#### Single Argument Function
+
+funcdec main(int:n)
+
+#### Multiple Argument Function
+
+funcdec main(int:n+int:m+int:x)
+
 ## How It Works
 
-Compiler is written in Haskell using only standard libraries and functions written by myself. No external libraries required
-to use this compiler.
-
-## Planned Features
-
-Functions, Classes, data types, loops, etc. Carrie will be a mostly Imperative programming language, with Functional
-influences.
+Compiler is written in Haskell using only standard libraries and functions written by myself. No external 
+libraries required to use this compiler. 
 
 ## Built With
 
