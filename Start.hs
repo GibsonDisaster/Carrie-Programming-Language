@@ -8,11 +8,11 @@ import CarrieCompiler
 
 main :: IO ()
 main = do
-    putStrLn "-- Carrie Compiler Version 0.0.3 --"
+    putStrLn "-- Carrie Compiler Version 0.0.4 --"
     let tokens = tokenPairs (words text)
     c <- openFile "main.c" WriteMode
     hPutStr c "#include <stdio.h>\n"
     hClose c
     parseTokens tokens
-    r <- createProcess (proc "gcc" ["main.c", "-o Carrie"])
+    r <- createProcess (proc "gcc" ["main.c"])
     putStrLn "Compilation Complete!"

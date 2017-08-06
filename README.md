@@ -69,6 +69,32 @@ Ex:
 funccall main()
 funccall main(3,4,5)
 
+### For Loops
+
+example for loop: 
+
+"forstart int:i=0 forstop i>10 forfunc i++ forend"
+
+### If Then Else Loops
+
+example if-then-else loop:
+
+"ifstart NULL var 1 eq == var 1 boolexpr then return true boolexpr else return false ifclose NULL"
+
+### Return statements
+
+Used to return a value.
+
+Ex:
+
+"return 1"
+
+## Factorial Function
+
+The following is how you would write a function to find the factorial of a number in Carrie:
+
+"funcdec factorial(int:n) ifstart NULL var n eq == var 1 boolexpr then return 1 boolexpr else return n*factorial(n-1) ifclose NULL funcend factorial"
+
 ## How It Works
 
 Compiler is written in Haskell using only standard libraries and functions written by myself. No external 

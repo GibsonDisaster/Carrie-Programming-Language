@@ -20,9 +20,6 @@ getIndex n arr
 replace :: Char -> Char -> [Char] -> [Char]
 replace z y str = [if x == z then y else x | x <- str]
 
-argParser :: String -> String
-argParser str = [if x == ':' then ' ' else x | x <- str]
-
 getFuncName :: [Char] -> [Char]
 getFuncName str
     | (head str) /= '(' = [(head str)] ++ getFuncName (tail str)
@@ -58,6 +55,46 @@ parsePairs (x, y)
     | x == "with" = do
         f <- openFile "main.c" AppendMode
         hPutStr f (y ++ ";\n")
+        hClose f
+    | x == "var" = do
+        f <- openFile "main.c" AppendMode
+        hPutStr f (" " ++ y ++ " ")
+        hClose f
+    | x == "eq" = do
+        f <- openFile "main.c" AppendMode
+        hPutStr f y
+        hClose f
+    | x == "ifstart" = do
+        f <- openFile "main.c" AppendMode
+        hPutStr f ("if (")
+        hClose f
+    | x == "boolexpr" = do
+        f <- openFile "main.c" AppendMode
+        if (y == "then") then (hPutStr f ") {\n") else hPutStr f "} else {\n"
+        hClose f
+    | x == "ifclose" = do
+        f <- openFile "main.c" AppendMode
+        hPutStrLn f "}"
+        hClose f
+    | x == "return" = do
+        f <- openFile "main.c" AppendMode
+        hPutStr f ("return " ++ y ++ ";\n")
+        hClose f
+    | x == "forstart" = do
+        f <- openFile "main.c" AppendMode
+        hPutStr f ("for(" ++ (replace ':' ' ' y) ++ ";")
+        hClose f
+    | x == "forstop" = do
+        f <- openFile "main.c" AppendMode
+        hPutStr f (y ++ ";")
+        hClose f
+    | x == "forfunc" = do
+        f <- openFile "main.c" AppendMode
+        hPutStrLn f (y ++ ") {")
+        hClose f
+    | x == "forend" = do
+        f <- openFile "main.c" AppendMode
+        hPutStrLn f ("}")
         hClose f
     | x == "intdec" = do
         f <- openFile "main.c" AppendMode
