@@ -6,9 +6,13 @@ the Sufjan Stevens album "Carrie and Lowell".
 
 ## Getting Started
 
-Compiler is not working yet. For the foreseable future after I get the compiler working, you will need to 
-write your carrie code in Src.hs as to avoid the IO Monad and all the trouble that comes from the IO String 
-type.
+To compile Carrie code, place CarrieCompiler in the same directory as a "main.cr" file. Then run the compiler with 
+"./CarrieCompiler". The output file will be named "Carrie".
+
+### Syntax
+Your code must be made up of "pairs". Where a pair is made by typing "function data". Only spaces are allowed, those are
+used to seperate functions and data. Newlines, tabs, etc will break your code DO NOT USE.
+Ex: "print Hello/World" 
 
 ### Hello World Carrie
 
