@@ -124,16 +124,16 @@ module ParseCarrie where
   bExpression :: Parser BExpr
   bExpression = buildExpressionParser bOperators bTerm
   
-  aOperators = [ [Prefix (reservedOp "-"   >> return (Neg             ))          ]
+  aOperators = [ [Prefix (reservedOp "-"   >> return (Neg))]
                 , [Infix  (reservedOp "*"   >> return (ABinary Multiply)) AssocLeft]
                 , [Infix  (reservedOp "/"   >> return (ABinary Divide  )) AssocLeft]
                 , [Infix  (reservedOp "+"   >> return (ABinary Add)) AssocLeft]
                 , [Infix (reservedOp "-" >> return (ABinary Subtract)) AssocLeft]
                 ]
   
-  bOperators = [ [Prefix (reservedOp "not" >> return (Not             ))          ]
-                , [Infix  (reservedOp "and" >> return (BBinary And     )) AssocLeft]
-                , [Infix  (reservedOp "or"  >> return (BBinary Or      )) AssocLeft]
+  bOperators = [ [Prefix (reservedOp "not" >> return (Not))]
+                , [Infix (reservedOp "and" >> return (BBinary And)) AssocLeft]
+                , [Infix (reservedOp "or"  >> return (BBinary Or)) AssocLeft]
                 ]
 
   aTerm =  parens aExpression
@@ -151,8 +151,7 @@ module ParseCarrie where
     a2 <- aExpression
     return $ RBinary op a1 a2
   
-  relation =  (reservedOp ">" >> return Greater)
-          <|> (reservedOp "<" >> return Less)
+  relation =  (reservedOp ">" >> return Greater) <|> (reservedOp "<" >> return Less) <|> (reservedOp "==" >> return Equal)
   
   parseString :: String -> Stmt
   parseString str = case parse carrieParser "" str of
