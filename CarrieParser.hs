@@ -8,7 +8,7 @@ module CarrieParser where
         • Parse Stmt's as [Stmt] [_]
     -}
 
-    data CrStruct = If CrValue [CrStmt] -- cond code
+    data CrStruct = If CrValue [String] -- cond code
                   | IfElse CrValue [CrStmt] [CrStmt] -- cond code (else code)
                   | While CrValue [CrStmt] -- cond code 
                   | CrFunc String [CrPair] CrValue [String] -- name args return-type code (should be [CrStmt])
@@ -46,9 +46,6 @@ module CarrieParser where
               | null s = r
               | otherwise = []:r
 
-    testInput :: String
-    testInput = "henning;\ntonko;\nis;\nlet x := 1;\n"
-
     spaces :: Parser ()
     spaces = skipMany1 space
 
@@ -73,6 +70,11 @@ module CarrieParser where
     toDataType "Bool" = CrBoolT
     toDataType "Nothing" = CrNothingT
     toDataType _ = CrUnknownT
+
+    toValue :: String -> CrValue
+    toValue "True" = CrBool True
+    toValue "False" = CrBool False
+    toValue _ = CrNothing ()
 
     funcName :: Parser String
     funcName = do
@@ -109,6 +111,25 @@ module CarrieParser where
         spaces
         t <- word
         return $ toDataType t
+
+    parseIf :: Parser CrStruct
+    parseIf = do
+        string "if"
+        spaces
+        char '('
+        cond <- word
+        char ')'
+        spaces
+        string "{\n"
+        code <- endBy line (string ";\n")
+        string "}\n"
+        optional newline
+        return $ If (toValue cond) code
+
+    parseLine :: Parser [CrStruct]
+    parseLine = do
+        ifs <- many1 parseIf
+        return ifs
 
     parseStmts :: Parser [String]
     parseStmts = do

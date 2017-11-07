@@ -5,6 +5,6 @@ module Main where
   main :: IO ()
   main = do
       fileInput <- readFile "test.cr"
-      case parse test "" fileInput of
+      case parse parseLine "" fileInput of
           Left err -> putStrLn (show err)
           Right val -> putStrLn (show val)

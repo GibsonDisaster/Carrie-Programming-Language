@@ -1,5 +1,27 @@
 # Carrie Programming Language
-Carrie is a small programming language written in Haskell using the Parsec library, named after the Sufjan Stevens album "Carrie and Lowell". VERY INCOMPLETE AND NON FUNCTIONAL. Currently it is more of a parser than a compiler (but not really a parser yet either).
+Carrie is a small programming language written in Haskell using the Parsec library. VERY INCOMPLETE AND NON FUNCTIONAL. Currently it is more of a parser than a compiler.
+
+## Features
+### Parser:
+* Parses Functions
+* Parses lines seperated by ';'
+* Starting to be able to parse If statements, etc
+
+### Compiler:
+* Nope
+
+## Planned Features
+### Parser:
+* Parsing While loops, for else loops, etc
+* Parsing different kinds of statements (==, >, <, :=)
+* Parsing function calls
+
+### Compiler:
+* Compile to one of the following (currently undecided):
+ 1) Rust
+ 2) C
+ 3) Go
+ 4) Java
 
 ## Built With
 
