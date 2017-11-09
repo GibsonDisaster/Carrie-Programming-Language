@@ -1,6 +1,6 @@
 module Main where
   import Text.ParserCombinators.Parsec hiding (spaces)
-  import CarrieParser
+  import Carrie.Parser.CarrieParser
 
   main :: IO ()
   main = do
