@@ -25,13 +25,13 @@ Carrie is a small programming language written in Haskell using the Parsec libra
 
 ### Examples
 #### Functions
-func main(Nothing:x) -> Nothing {
-  let x := 2;
+func main(Nothing:x) -> Nothing { \
+let x := 2; \
 }
 
 #### If Stmt's
-if (True) {
-  let y := 9;
+if (True) { \
+  let y := 9; \
 }
 
 ## Built With
