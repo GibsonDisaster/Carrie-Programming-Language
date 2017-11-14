@@ -4,7 +4,7 @@ module Main where
 
   main :: IO ()
   main = do
-      fileInput <- readFile "test.cr"
+      fileInput <- readFile "test.car"
       case parse parseLine "" fileInput of
           Left err -> putStrLn (show err)
           Right val -> putStrLn (show val)
