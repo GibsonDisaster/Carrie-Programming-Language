@@ -3,7 +3,7 @@ module Carrie.Parser.CarrieStructs where
   data CrStruct = If CrValue [String] -- cond code
                 | IfElse CrValue [CrStmt] [CrStmt] -- cond code (else code)
                 | While CrValue [CrStmt] -- cond code 
-                | CrFunc String [CrPair] CrValue [String] -- name args return-type code (should be [CrStmt])
+                | CrFunc String [CrPair] CrValue [CrStruct] -- name args return-type code (should be [CrStmt])
                 deriving (Show, Eq)
 
   data CrValue = CrStringT -- String type

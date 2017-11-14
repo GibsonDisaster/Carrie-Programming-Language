@@ -65,12 +65,12 @@ module Carrie.Parser.CarrieParser where
         let args''' = map (\[t, v] -> (toDataType t, v)) args''
         return args'''
 
-    funcGuts :: Parser [String]
+    funcGuts :: Parser [CrStruct]
     funcGuts = do
         spaces
         char '{'
         newline
-        guts <- parseStmts
+        guts <- parseLine
         char '}'
         return guts
 
@@ -92,13 +92,13 @@ module Carrie.Parser.CarrieParser where
         spaces
         string "{\n"
         code <- endBy line (string ";\n")
-        string "}\n"
+        optional $ string "}\n"
         optional newline
         return $ If (toValue cond) code
 
     parseLine :: Parser [CrStruct]
     parseLine = do
-        ifs <- many1 parseIf
+        ifs <- many parseIf
         return ifs
 
     parseStmts :: Parser [String]

@@ -1,8 +1,8 @@
+func main(Int:x Bool:y) -> Bool {
 if (True) {
-  let y := 2;
-  let x := y * 2;
+  let x := 2;
 }
-
-if (False) {
-  let z := 3;
+if (True) {
+  let y := 5;
+}
 }

@@ -23,6 +23,17 @@ Carrie is a small programming language written in Haskell using the Parsec libra
  3) Go
  4) Java
 
+### Examples
+#### Functions
+func main(Nothing:x) -> Nothing {
+  let x := 2;
+}
+
+#### If Stmt's
+if (True) {
+  let y := 9;
+}
+
 ## Built With
 
 * [Haskell](https://www.haskell.org) - Compiler code
