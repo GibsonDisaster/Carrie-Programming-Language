@@ -1,8 +1,7 @@
-func main(Int:x Bool:y) -> Bool {
+func main(x:Int) -> Nothing {
 if (True) {
-  let x := 2;
+let x := 56;
+x > 58;
+return x;
 }
-if (True) {
-  let y := 5;
-}
-}
+}`
