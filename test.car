@@ -1,7 +1,6 @@
-func main(x:Int) -> Nothing {
-if (True) {
-let x := 56;
-x > 58;
-return x;
+func fact(Int:num) -> Int {
+if (num == 1) {
+return 1;
 }
-}`
+return num;
+}
