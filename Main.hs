@@ -2,6 +2,7 @@ module Main where
   import Text.ParserCombinators.Parsec hiding (spaces)
   import System.Environment
   import Carrie.Parser.CarrieParser
+  import Carrie.Parser.CarrieStructs
 
   main :: IO ()
   main = do

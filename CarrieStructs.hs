@@ -1,10 +1,5 @@
 module Carrie.Parser.CarrieStructs where
 
-  data CrStruct = If CrValue [CrStmt] -- cond code
-                | While CrValue [CrStmt] -- cond code 
-                | CrFunc String [CrPair] CrValue [CrStruct] -- name args return-type code (should be [CrStmt])
-                deriving (Show, Eq)
-
   data CrValue = CrStringT -- String type
                | CrIntT -- Int type
                | CrFloatT -- Float type
@@ -19,15 +14,17 @@ module Carrie.Parser.CarrieStructs where
                | CrList [CrValue] -- List values
                | CrNothing () -- Nothing value
                | CrVar String CrValue -- var-name value
+               | Greater String String -- val1 val2
+               | Lesser String String -- val1 val2
+               | Equal String String -- val1 val2
                deriving (Show, Eq)
 
   data CrStmt = CrAssign String String -- variable-name and value
-              | CrAssignV String CrValue -- variable-name and other variable name (i.e: let x := a)
               | CrFuncCall String [String] -- func-name and args
               | Return String -- return var
-              | Greater String String -- val1 val2
-              | Lesser String String -- val1 val2
-              | Equal String String -- val1 val2
+              | If CrValue [CrStmt] -- cond code
+              | While CrValue [CrStmt] -- cond code 
+              | CrFunc String [CrPair] CrValue [CrStmt] -- name args return-type code (should be [CrStmt])
               deriving (Show, Eq)
 
   type CrPair = (CrValue, String) --val name
@@ -37,13 +34,6 @@ module Carrie.Parser.CarrieStructs where
 
   class Carrie c where
     compile :: c -> [String] -- Will turn the struct into its respective code (go, java, c, rust, etc)
-
--- Instance Declarations for all CrStructs
-
-  instance Carrie CrStruct where
-    compile (If _ _) = ["if"]
-    compile (While _ _) = ["while"]
-    compile (CrFunc _ _ _ _) = ["function"]
 
   instance Carrie CrValue where
     compile CrStringT = ["String"]
@@ -58,12 +48,14 @@ module Carrie.Parser.CarrieStructs where
     compile (CrBool _) = ["Bool Value"]
     compile (CrNothing _) = ["Nothing Value"]
     compile (CrVar _ _) = ["Var Value"]
-
-  instance Carrie CrStmt where
-    compile (CrAssign _ _) = ["Assign Stmt"]
-    compile (CrAssignV _ _) = ["Variable-Assign Stmt"]
-    compile (CrFuncCall _ _) = ["Function Call"]
-    compile (Return _) = ["Return Stmt"]
     compile (Greater _ _) = ["Greater-Than Stmt"]
     compile (Lesser _ _) = ["Lesser-Than Stmt"]
     compile (Equal _ _) = ["Equality Stmt"]
+
+  instance Carrie CrStmt where
+    compile (CrAssign _ _) = ["Assign Stmt"]
+    compile (CrFuncCall _ _) = ["Function Call"]
+    compile (Return _) = ["Return Stmt"]
+    compile (If _ _) = ["if"]
+    compile (While _ _) = ["while"]
+    compile (CrFunc _ _ _ _) = ["function"]

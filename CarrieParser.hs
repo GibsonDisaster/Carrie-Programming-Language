@@ -5,7 +5,7 @@ module Carrie.Parser.CarrieParser where
     --Made By Henning Tonko ☭
     {-
         TODO:
-        • Parse CrStruct's [_]
+        • Parse CrStmt's [_]
         • Parse Stmt's as [Stmt] [_]
     -}
 
@@ -25,6 +25,9 @@ module Carrie.Parser.CarrieParser where
     word :: Parser String
     word = many1 $ choice [letter, digit]
 
+    word' :: Parser String
+    word' = many1 $ choice [letter, digit, char ' ', char '>', char '<', char '=']
+
     number :: Parser Integer
     number = read <$> many1 digit
 
@@ -35,7 +38,7 @@ module Carrie.Parser.CarrieParser where
 
     line' :: Parser CrStmt
     line' = do
-        l <- choice [parseAssign, parseFuncCall, parseReturn, parseGreater, parseLesser, parseEqual]
+        l <- choice [parseAssign, parseFuncCall, parseReturn]
         return l
 
     parseFuncCall :: Parser CrStmt
@@ -59,6 +62,9 @@ module Carrie.Parser.CarrieParser where
         string ":="
         spaces
         name <- word
+        choice [string ";", string ";\n"]
+        --string ";"
+        --choice [string ";\n", string ";", string "\n"]
         return $ CrAssign var name
 
     parseReturn :: Parser CrStmt
@@ -66,9 +72,11 @@ module Carrie.Parser.CarrieParser where
         string "return"
         spaces
         r <- word
+        choice [string ";", string ";\n"]
+        --string ";" -- <|> string "\n"
         return $ Return r
 
-    parseGreater :: Parser CrStmt
+    parseGreater :: Parser CrValue
     parseGreater = do
         v1 <- word
         spaces
@@ -77,7 +85,7 @@ module Carrie.Parser.CarrieParser where
         v2 <- word
         return $ Greater v1 v2
 
-    parseLesser :: Parser CrStmt
+    parseLesser :: Parser CrValue
     parseLesser = do
         v1 <- word
         spaces
@@ -86,7 +94,7 @@ module Carrie.Parser.CarrieParser where
         v2 <- word
         return $ Lesser v1 v2
 
-    parseEqual :: Parser CrStmt
+    parseEqual :: Parser CrValue
     parseEqual = do
         v1 <- word
         spaces
@@ -108,6 +116,16 @@ module Carrie.Parser.CarrieParser where
     toValue "False" = CrBool False
     toValue _ = CrNothing ()
 
+    toBoolStruct :: String -> CrValue
+    toBoolStruct expr = if (length ws > 1) then sortExpr ws else (toValue (head ws))
+      where
+        ws = splitWith (/= ' ') expr
+        sortExpr [x, y, z]
+          | y == "==" = Equal x z
+          | y == ">" = Greater x z
+          | y == "<" = Lesser x z
+          | otherwise = CrNothing ()
+
     funcName :: Parser String
     funcName = do
         skipMany spaces
@@ -127,13 +145,13 @@ module Carrie.Parser.CarrieParser where
         let args''' = map (\[t, v] -> (toDataType t, v)) args''
         return args'''
 
-    funcGuts :: Parser [CrStruct]
+    funcGuts :: Parser [CrStmt]
     funcGuts = do
         spaces
         char '{'
         newline
         guts <- parseLine
-        char '}'
+        string "\n}"
         return guts
 
     funcReturn :: Parser CrValue
@@ -144,39 +162,36 @@ module Carrie.Parser.CarrieParser where
         t <- word
         return $ toDataType t
 
-    parseIf :: Parser CrStruct
+    parseIf :: Parser CrStmt
     parseIf = do
         string "if"
         spaces
         char '('
-        cond <- word
+        cond <- word'
         char ')'
         spaces
         string "{\n"
-        code <- endBy line' (string ";\n")
-        optional $ string "}"
-        optional newline
-        return $ If (toValue cond) code
+        code <- endBy line' (char '\n')
+        string "}\n"
+        return $ If (toBoolStruct cond) code
 
-    parseWhile :: Parser CrStruct
+    parseWhile :: Parser CrStmt
     parseWhile = do
         string "while"
         spaces
         char '('
-        cond <- word
+        cond <- word'
         char ')'
         spaces
         string "{\n"
-        code <- endBy line' (string ";\n")
-        optional $ string "}"
-        optional newline
-        return $ While (toValue cond) code
+        code <- endBy line' (char '\n')
+        string "}\n"
+        return $ While (toBoolStruct cond) code
 
-    parseLine :: Parser [CrStruct]
+    parseLine :: Parser [CrStmt]
     parseLine = do
-        ifs <- many parseIf
-        whiles <- many parseWhile
-        return $ ifs ++ whiles
+        stmts <- many1 $ choice [parseIf, parseWhile, parseReturn, parseAssign]
+        return $ stmts
 
     parseStmts :: Parser [CrStmt]
     parseStmts = do
@@ -184,16 +199,15 @@ module Carrie.Parser.CarrieParser where
         st <- endBy line' (string ";\n")
         return st
 
-    parseFunc :: Parser CrStruct
+    parseFunc :: Parser CrStmt
     parseFunc = do
         n <- funcName
         a <- funcArgs
         t <- funcReturn
         g <- funcGuts
-        optional newline
         return $ CrFunc n a t g
 
-    mainParser :: Parser [CrStruct]
+    mainParser :: Parser [CrStmt]
     mainParser = do
         fs <- many1 parseFunc
         return fs

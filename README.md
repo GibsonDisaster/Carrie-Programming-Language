@@ -5,7 +5,8 @@ Carrie is a small programming language written in Haskell using the Parsec libra
 ### Parser:
 * Parses Functions
 * Parses lines seperated by ';'
-* Starting to be able to parse If statements, etc
+* Parses If, While Stmt's
+* Parses different kind of lines (assigning and returning)
 
 ### Compiler:
 * Nope
@@ -15,6 +16,7 @@ Carrie is a small programming language written in Haskell using the Parsec libra
 * Parsing While loops, for else loops, etc
 * Parsing different kinds of statements (==, >, <, :=)
 * Parsing function calls
+* Allowing you to indent your code (not allowed yet)
 
 ### Compiler:
 * Compile to one of the following (currently undecided):
@@ -31,7 +33,20 @@ let x := 2; \
 
 #### If Stmt's
 if (True) { \
-  let y := 9; \
+let y := 9; \
+}
+
+You have to test for equality in some when using variables and If Statements
+This works:
+
+if (z == True) {\
+...code...\
+}
+
+This does not work:
+
+if (z) {\
+...code...\
 }
 
 ## Built With
