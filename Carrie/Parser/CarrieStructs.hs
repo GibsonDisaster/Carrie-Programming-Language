@@ -24,6 +24,7 @@ module Carrie.Parser.CarrieStructs where
               | Return String -- return var
               | If CrValue [CrStmt] -- cond code
               | While CrValue [CrStmt] -- cond code 
+              | Comment String -- comment content
               | CrFunc String [CrPair] CrValue [CrStmt] -- name args return-type code (should be [CrStmt])
               deriving (Show, Eq)
 

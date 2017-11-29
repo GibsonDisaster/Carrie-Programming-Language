@@ -5,8 +5,9 @@ module Carrie.Parser.CarrieParser where
     --Made By Henning Tonko ☭
     {-
         TODO:
-        • Parse CrStmt's [_]
-        • Parse Stmt's as [Stmt] [_]
+        • Make parseLine parse more than one line [X]
+        • Add funcall()() to valid return types [_]
+        • Clean up this code (Seperate files or just move around) [_]
     -}
 
     splitWith :: Foldable t => (a -> Bool) -> t a -> [[a]]
@@ -66,6 +67,13 @@ module Carrie.Parser.CarrieParser where
         --string ";"
         --choice [string ";\n", string ";", string "\n"]
         return $ CrAssign var name
+
+    parseComment :: Parser CrStmt
+    parseComment = do
+        string "#"
+        spaces
+        w <- manyTill anyChar (try (string " #"))
+        return $ Comment w
 
     parseReturn :: Parser CrStmt
     parseReturn = do
@@ -148,8 +156,7 @@ module Carrie.Parser.CarrieParser where
     funcGuts :: Parser [CrStmt]
     funcGuts = do
         spaces
-        char '{'
-        newline
+        string "{\n"
         guts <- parseLine
         string "\n}"
         return guts
@@ -172,7 +179,7 @@ module Carrie.Parser.CarrieParser where
         spaces
         string "{\n"
         code <- endBy line' (char '\n')
-        string "}\n"
+        string "}"
         return $ If (toBoolStruct cond) code
 
     parseWhile :: Parser CrStmt
@@ -185,12 +192,12 @@ module Carrie.Parser.CarrieParser where
         spaces
         string "{\n"
         code <- endBy line' (char '\n')
-        string "}\n"
+        string "}"
         return $ While (toBoolStruct cond) code
 
     parseLine :: Parser [CrStmt]
     parseLine = do
-        stmts <- many1 $ choice [parseIf, parseWhile, parseReturn, parseAssign]
+        stmts <- sepBy (choice [parseReturn, parseAssign, parseIf, parseWhile]) (string "\n")
         return $ stmts
 
     parseStmts :: Parser [CrStmt]
@@ -209,5 +216,5 @@ module Carrie.Parser.CarrieParser where
 
     mainParser :: Parser [CrStmt]
     mainParser = do
-        fs <- many1 parseFunc
+        fs <- many1 $ choice [parseFunc, parseComment]
         return fs

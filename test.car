@@ -1,6 +1,6 @@
-func fact(Int:num) -> Int {
-if (num == 1) {
+func fact(Int:x) -> Int {
+if (x == 1) {
 return 1;
 }
-return num;
+let y := x;
 }

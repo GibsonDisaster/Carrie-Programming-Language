@@ -4,6 +4,14 @@ module Main where
   import Carrie.Parser.CarrieParser
   import Carrie.Parser.CarrieStructs
 
+  p :: Parser CrStmt
+  p = do
+      stmts <- choice [parseIf, parseWhile, parseReturn, parseAssign]
+      return $ stmts
+
+  testParser :: Parser [CrStmt]
+  testParser = sepBy p (char '\n')
+
   main :: IO ()
   main = do
       --fileName <- fmap head getArgs
