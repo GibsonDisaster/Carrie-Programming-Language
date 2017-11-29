@@ -5,7 +5,6 @@ module Carrie.Parser.CarrieParser where
     --Made By Henning Tonko ☭
     {-
         TODO:
-        • Make parseLine parse more than one line [X]
         • Add funcall()() to valid return types [_]
         • Clean up this code (Seperate files or just move around) [_]
     -}
@@ -39,7 +38,8 @@ module Carrie.Parser.CarrieParser where
 
     line' :: Parser CrStmt
     line' = do
-        l <- choice [parseAssign, parseFuncCall, parseReturn]
+        l <- choice [parseAssign, parseFuncCall, parseReturn, parseIf, parseWhile]
+        optional newline
         return l
 
     parseFuncCall :: Parser CrStmt
@@ -157,9 +157,8 @@ module Carrie.Parser.CarrieParser where
     funcGuts = do
         spaces
         string "{\n"
-        guts <- parseLine
-        string "\n}"
-        return guts
+        guts <- manyTill line' (string "}")
+        return $ guts
 
     funcReturn :: Parser CrValue
     funcReturn = do
@@ -177,9 +176,8 @@ module Carrie.Parser.CarrieParser where
         cond <- word'
         char ')'
         spaces
-        string "{\n"
-        code <- endBy line' (char '\n')
-        string "}"
+        string "START\n"
+        code <- manyTill line' (string "END")
         return $ If (toBoolStruct cond) code
 
     parseWhile :: Parser CrStmt
@@ -190,15 +188,9 @@ module Carrie.Parser.CarrieParser where
         cond <- word'
         char ')'
         spaces
-        string "{\n"
-        code <- endBy line' (char '\n')
-        string "}"
+        string "START\n"
+        code <- manyTill line' (string "END")
         return $ While (toBoolStruct cond) code
-
-    parseLine :: Parser [CrStmt]
-    parseLine = do
-        stmts <- sepBy (choice [parseReturn, parseAssign, parseIf, parseWhile]) (string "\n")
-        return $ stmts
 
     parseStmts :: Parser [CrStmt]
     parseStmts = do

@@ -31,23 +31,23 @@ func main(Nothing:x) -> Nothing { \
 let x := 2; \
 }
 
-#### If Stmt's
-if (True) { \
+#### If Stmt's (While Loops work the same pretty much)
+if (True) START \
 let y := 9; \
-}
+END
 
 You have to test for equality in some when using variables and If Statements
 This works:
 
-if (z == True) {\
+if (z == True) START\
 ...code...\
-}
+END
 
 This does not work:
 
-if (z) {\
+if (z) START\
 ...code...\
-}
+END
 
 ## Built With
 

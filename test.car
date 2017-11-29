@@ -1,6 +1,8 @@
 func fact(Int:x) -> Int {
-if (x == 1) {
-return 1;
-}
-let y := x;
+while (True) START
+let x := 5;
+let y := 4;
+END
+return 5;
+return 4;
 }
