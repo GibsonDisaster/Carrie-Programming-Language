@@ -14,8 +14,8 @@ module Main where
 
   main :: IO ()
   main = do
-      --fileName <- fmap head getArgs
-      fileInput <- readFile "test.car"
+      fileName <- fmap head getArgs
+      fileInput <- readFile fileName
       case parse mainParser "" fileInput of
           Left err -> putStrLn (show err)
           Right val -> putStrLn (show val)
