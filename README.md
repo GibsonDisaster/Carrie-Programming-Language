@@ -27,35 +27,42 @@ Carrie is a small programming language written in Haskell using the Parsec libra
 
 ### Examples
 #### ___Functions___
-func main(Nothing:x) -> Nothing { \
-let x := 2; \
+```
+func main(Nothing:x) -> Nothing {
+let x := 2;
 }
+```
 
 #### ___If Stmt's (While Loops work the same pretty much)___
-if (True) START \
-let y := 9; \
+```
+if (True) START
+let y := 9;
 END
+```
 
 You have to test for equality in some when using variables and If Statements
 This works:
 
-if (z == True) START\
-...code...\
+```
+if (z == True) START
+...code...
 END
+```
 
 This does not work:
-
-if (z) START\
-...code...\
+```
+if (z) START
+...code...
 END
+```
 
 #### ___Comments___
 They must be on their own line and start and end with a "#"
-
-\# This is a valid comment \#
+```
+# This is a valid comment #
 
 #This is not#
-
+```
 ## Built With
 
 * [Haskell](https://www.haskell.org) - Compiler code
