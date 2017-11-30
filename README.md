@@ -26,12 +26,12 @@ Carrie is a small programming language written in Haskell using the Parsec libra
  4) Java
 
 ### Examples
-#### Functions
+#### ___Functions___
 func main(Nothing:x) -> Nothing { \
 let x := 2; \
 }
 
-#### If Stmt's (While Loops work the same pretty much)
+#### ___If Stmt's (While Loops work the same pretty much)___
 if (True) START \
 let y := 9; \
 END
@@ -48,6 +48,13 @@ This does not work:
 if (z) START\
 ...code...\
 END
+
+#### ___Comments___
+They must be on their own line and start and end with a "#"
+
+\# This is a valid comment \#
+
+#This is not#
 
 ## Built With
 

@@ -2,10 +2,10 @@ module Carrie.Parser.CarrieParser where
     import Text.ParserCombinators.Parsec hiding (spaces)
     import Carrie.Parser.CarrieStructs
     import Control.Monad
-    --Made By Henning Tonko ☭
+    --Written By Henning Tonko ☭
     {-
         TODO:
-        • Add funcall()() to valid return types [_]
+        • Add funcall()() and algebraic stmt's to valid return types [_]
         • Clean up this code (Seperate files or just move around) [_]
     -}
 
@@ -38,7 +38,7 @@ module Carrie.Parser.CarrieParser where
 
     line' :: Parser CrStmt
     line' = do
-        l <- choice [parseAssign, parseFuncCall, parseReturn, parseIf, parseWhile]
+        l <- choice [parseAssign, parseFuncCall, parseReturn, parseIf, parseWhile, parseComment]
         optional newline
         return l
 

@@ -1,8 +1,7 @@
 func fact(Int:x) -> Int {
-while (True) START
-let x := 5;
-let y := 4;
-END
-return 5;
 return 4;
+}
+func main(Int:y) -> Bool {
+funcall(fact)(4);
+# Henlo this is a comment #
 }
