@@ -26,17 +26,25 @@ Carrie is a small programming language written in Haskell using the Parsec libra
  4) Java
 
 ### Examples
+
+#### ___Assignment___
+You assign a value to a variable like this:
+```
+let x := 1 + 0;
+```
+(You cannot do single number assignments right now, this will be allowed very soon)
+
 #### ___Functions___
 ```
 func main(Nothing:x) -> Nothing {
-let x := 2;
+let x := 2 + 0;
 }
 ```
 
 #### ___If Stmt's (While Loops work the same pretty much)___
 ```
 if (True) START
-let y := 9;
+let y := 9 + 0;
 END
 ```
 
@@ -54,6 +62,18 @@ This does not work:
 if (z) START
 ...code...
 END
+```
+
+#### ___Dec___
+DEC is used to declare a variable with a type instead of an initial value. Often used in conjunction with bind.
+```
+DEC(z, Int);
+```
+
+#### ___Bind___
+bind is used to assign the output of a function and its input to a variable. Often used in conjunction with DEC. The following code binds the output of giving factorial the number six and stores it in z. (z -> 720)
+```
+bind(factorial, 6, z);
 ```
 
 #### ___Comments___

@@ -1,7 +1,9 @@
 func fact(Int:x) -> Int {
-return 4;
-}
-func main(Int:y) -> Bool {
-funcall(fact)(4);
-# Henlo this is a comment #
+if (x == 1) START
+return 1;
+END
+let y := x - 1;
+DEC(z, Int);
+bind(fact)(y)(z);
+return z;
 }

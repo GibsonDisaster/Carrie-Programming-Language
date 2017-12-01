@@ -6,6 +6,7 @@ module Carrie.Parser.CarrieParser where
     {-
         TODO:
         • Add funcall()() and algebraic stmt's to valid return types [_]
+        • How to implement std lib functions (print, concat, head/tail, etc) [_]
         • Clean up this code (Seperate files or just move around) [_]
     -}
 
@@ -31,16 +32,45 @@ module Carrie.Parser.CarrieParser where
     number :: Parser Integer
     number = read <$> many1 digit
 
-    line :: Parser String --Change later to, "line :: Parser CrStmt"
+    line :: Parser String
     line = do
         l <- many1 (choice [oneOf (['a'..'z']++['A'..'Z']++[' ']++"!#$%&|*+-/:<=>?@^_~"), digit])
         return l
 
     line' :: Parser CrStmt
     line' = do
-        l <- choice [parseAssign, parseFuncCall, parseReturn, parseIf, parseWhile, parseComment]
+        l <- choice [parseDec, parseBind, parseAssign, parseFuncCall, parseReturn, parseIf, parseWhile, parseComment]
         optional newline
         return l
+
+    parseMath :: Parser CrStmt
+    parseMath = do
+        num1 <- word
+        spaces
+        op <- oneOf ['+', '-', '*', '/']
+        spaces
+        num2 <- word
+        let op' = case op of
+                    '+' -> Add num1 num2
+                    '-' -> Sub num1 num2
+                    '*' -> Mul num1 num2
+                    '/' -> Div num1 num2
+        return op'
+
+    parseBind :: Parser CrStmt
+    parseBind = do
+        string "bind"
+        char '('
+        f <- word
+        char ')'
+        char '('
+        a <- word
+        char ')'
+        char '('
+        o <- word
+        char ')'
+        char ';'
+        return $ CrBind f a o
 
     parseFuncCall :: Parser CrStmt
     parseFuncCall = do
@@ -54,6 +84,20 @@ module Carrie.Parser.CarrieParser where
         char ';'
         return $ CrFuncCall f a
 
+    parseDec :: Parser CrStmt
+    parseDec = do
+        string "DEC("
+        w <- word
+        optional spaces
+        char ','
+        optional spaces
+        t <- word
+        optional spaces
+        char ')'
+        char ';'
+        return $ CrDec w (toDataType t)
+
+
     parseAssign :: Parser CrStmt
     parseAssign = do
         string "let"
@@ -62,10 +106,8 @@ module Carrie.Parser.CarrieParser where
         spaces
         string ":="
         spaces
-        name <- word
+        name <- parseMath
         choice [string ";", string ";\n"]
-        --string ";"
-        --choice [string ";\n", string ";", string "\n"]
         return $ CrAssign var name
 
     parseComment :: Parser CrStmt
@@ -81,7 +123,6 @@ module Carrie.Parser.CarrieParser where
         spaces
         r <- word
         choice [string ";", string ";\n"]
-        --string ";" -- <|> string "\n"
         return $ Return r
 
     parseGreater :: Parser CrValue

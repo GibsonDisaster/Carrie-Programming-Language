@@ -19,8 +19,14 @@ module Carrie.Parser.CarrieStructs where
                | Equal String String -- val1 val2
                deriving (Show, Eq)
 
-  data CrStmt = CrAssign String String -- variable-name and value
+  data CrStmt = CrAssign String CrStmt -- variable-name and value
               | CrFuncCall String [String] -- func-name and args
+              | CrBind String String String -- func-name var output
+              | CrDec String CrValue -- var-name type
+              | Add String String
+              | Sub String String
+              | Mul String String
+              | Div String String
               | Return String -- return var
               | If CrValue [CrStmt] -- cond code
               | While CrValue [CrStmt] -- cond code 
