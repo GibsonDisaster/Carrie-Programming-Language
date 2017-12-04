@@ -11,17 +11,6 @@ Carrie is a small programming language written in Haskell using the Parsec libra
 ### Compiler:
 * To run the compiler simply type "./CarrieCompiler name.car", where name is the name of your Carrie program.
 
-## Planned Features
-### Parser:
-* Parsing While loops, for else loops, etc
-* Parsing different kinds of statements (==, >, <, :=)
-* Parsing function calls
-* Allowing you to indent your code (not allowed yet)
-
-### Compiler:
-* Compiles to Rust code which is then compiled by the rust compiler.
-* In the future there will be a tag you can use to keep or delete the intermediary rust file.
-
 ### Examples
 
 #### ___Assignment___
