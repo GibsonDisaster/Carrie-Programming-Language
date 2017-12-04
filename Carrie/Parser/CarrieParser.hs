@@ -5,8 +5,8 @@ module Carrie.Parser.CarrieParser where
     --Written By Henning Tonko ☭
     {-
         TODO:
-        • Add funcall()() and algebraic stmt's to valid return types [_]
         • How to implement std lib functions (print, concat, head/tail, etc) [_]
+        • Add in parsing for lists [_]
         • Clean up this code (Seperate files or just move around) [_]
     -}
 
@@ -39,7 +39,7 @@ module Carrie.Parser.CarrieParser where
 
     line' :: Parser CrStmt
     line' = do
-        l <- choice [parseDec, parseBind, parseAssign, parseFuncCall, parseReturn, parseIf, parseWhile, parseComment]
+        l <- choice [parsePrint, parseDec, parseBind, parseAssign, parseFuncCall, parseReturn, parseIf, parseWhile, parseComment]
         optional newline
         return l
 
@@ -109,6 +109,14 @@ module Carrie.Parser.CarrieParser where
         name <- parseMath
         choice [string ";", string ";\n"]
         return $ CrAssign var name
+
+    parsePrint :: Parser CrStmt
+    parsePrint = do
+        string "print("
+        w <- word
+        char ')'
+        choice [string ";", string ";\n"]
+        return $ CrPrint w
 
     parseComment :: Parser CrStmt
     parseComment = do

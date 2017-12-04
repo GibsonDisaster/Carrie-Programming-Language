@@ -1,10 +1,10 @@
-module Carrie.Parser.CarrieStructs where
+module Carrie.Parser.CarrieStructs where  
 
   data CrValue = CrStringT -- String type
                | CrIntT -- Int type
                | CrFloatT -- Float type
                | CrBoolT -- Boolean type
-               | CrListT -- List type
+               | CrListT CrValue -- List type
                | CrNothingT -- Nothing type (void)
                | CrUnknownT -- Unknown type (null)
                | CrString String -- String value
@@ -32,37 +32,8 @@ module Carrie.Parser.CarrieStructs where
               | While CrValue [CrStmt] -- cond code 
               | Comment String -- comment content
               | CrFunc String [CrPair] CrValue [CrStmt] -- name args return-type code (should be [CrStmt])
+              | CrPrint String -- std print function
+              | CrError String -- error for bad parsing results
               deriving (Show, Eq)
 
   type CrPair = (CrValue, String) --val name
-
--- Typeclass so I can return different structs from same function in a generalized type
--- Also will create a type classed method for turning structs into actual code.
-
-  class Carrie c where
-    compile :: c -> [String] -- Will turn the struct into its respective code (go, java, c, rust, etc)
-
-  instance Carrie CrValue where
-    compile CrStringT = ["String"]
-    compile CrIntT = ["Int"]
-    compile CrFloatT = ["Float"]
-    compile CrBoolT = ["Bool"]
-    compile CrNothingT = ["Nothing"]
-    compile CrUnknownT = ["Unknown Value"]
-    compile (CrString _) = ["String value"]
-    compile (CrInt _) = ["Int Value"]
-    compile (CrFloat _) = ["Float Value"]
-    compile (CrBool _) = ["Bool Value"]
-    compile (CrNothing _) = ["Nothing Value"]
-    compile (CrVar _ _) = ["Var Value"]
-    compile (Greater _ _) = ["Greater-Than Stmt"]
-    compile (Lesser _ _) = ["Lesser-Than Stmt"]
-    compile (Equal _ _) = ["Equality Stmt"]
-
-  instance Carrie CrStmt where
-    compile (CrAssign _ _) = ["Assign Stmt"]
-    compile (CrFuncCall _ _) = ["Function Call"]
-    compile (Return _) = ["Return Stmt"]
-    compile (If _ _) = ["if"]
-    compile (While _ _) = ["while"]
-    compile (CrFunc _ _ _ _) = ["function"]

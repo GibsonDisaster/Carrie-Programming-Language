@@ -1,15 +1,15 @@
 # Carrie Programming Language
-Carrie is a small programming language written in Haskell using the Parsec library. VERY INCOMPLETE AND NON FUNCTIONAL. Currently it is more of a parser than a compiler.
+Carrie is a small programming language written in Haskell using the Parsec library. There is limited functionality as of V1.0 but more features will be added as time goes on.
 
 ## Features
 ### Parser:
-* Parses Functions
+* Parses Functions, the code in the functions and comments wherever
 * Parses lines seperated by ';'
 * Parses If, While Stmt's
 * Parses different kind of lines (assigning and returning)
 
 ### Compiler:
-* Nope
+* To run the compiler simply type "./CarrieCompiler name.car", where name is the name of your Carrie program.
 
 ## Planned Features
 ### Parser:
@@ -19,11 +19,8 @@ Carrie is a small programming language written in Haskell using the Parsec libra
 * Allowing you to indent your code (not allowed yet)
 
 ### Compiler:
-* Compile to one of the following (currently undecided):
- 1) Rust
- 2) C
- 3) Go
- 4) Java
+* Compiles to Rust code which is then compiled by the rust compiler.
+* In the future there will be a tag you can use to keep or delete the intermediary rust file.
 
 ### Examples
 
@@ -38,6 +35,20 @@ let x := 1 + 0;
 ```
 func main(Nothing:x) -> Nothing {
 let x := 2 + 0;
+}
+```
+
+This function calculates the factorial of a number.
+```
+func fact(Int:x) -> Int {
+if (x == 1) START
+return 1;
+END
+let y := x - 1;
+DEC(z, Int);
+bind(fact)(y)(z);
+let f := z * x;
+return f;
 }
 ```
 
@@ -68,11 +79,13 @@ END
 DEC is used to declare a variable with a type instead of an initial value. Often used in conjunction with bind.
 ```
 DEC(z, Int);
+bind(factorial, 6, z);
 ```
 
 #### ___Bind___
 bind is used to assign the output of a function and its input to a variable. Often used in conjunction with DEC. The following code binds the output of giving factorial the number six and stores it in z. (z -> 720)
 ```
+DEC(z, Int);
 bind(factorial, 6, z);
 ```
 
