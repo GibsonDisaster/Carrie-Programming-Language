@@ -6,6 +6,13 @@ module Main where
   import Carrie.Parser.CarrieStructs
   import Carrie.Compiler.CarrieCompiler
 
+  testMain :: IO ()
+  testMain = do
+    fileInput <- readFile "test.car"
+    case parse mainParser "" fileInput of
+      Left err -> putStrLn $ show err
+      Right val -> putStrLn $ show val
+
   main :: IO ()
   main = do
     fileName <- fmap head getArgs

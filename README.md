@@ -16,9 +16,8 @@ Carrie is a small programming language written in Haskell using the Parsec libra
 #### ___Assignment___
 You assign a value to a variable like this:
 ```
-let x := 1 + 0;
+let x := $1;
 ```
-(You cannot do single number assignments right now, this will be allowed very soon)
 
 #### ___Functions___
 ```
@@ -85,6 +84,13 @@ They must be on their own line and start and end with a "#"
 
 #This is not#
 ```
+
+#### ___Lists___
+Lists are created by place a list of values seperated by a comma and a space in between two '|' characters
+```
+let x := |1, 2, 3|;
+```
+
 ## Built With
 
 * [Haskell](https://www.haskell.org) - Compiler code

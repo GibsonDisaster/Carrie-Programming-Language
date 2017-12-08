@@ -6,7 +6,9 @@ module Carrie.Parser.CarrieParser where
     {-
         TODO:
         • How to implement std lib functions (print, concat, head/tail, etc) [_]
-        • Add in parsing for lists [_]
+        • Add in parsing for lists [X]
+        • Change String reps in CrStmt's to be CrStmt's or CrValue's [_]
+        • Change how assign works [X]
         • Clean up this code (Seperate files or just move around) [_]
     -}
 
@@ -29,6 +31,11 @@ module Carrie.Parser.CarrieParser where
     word' :: Parser String
     word' = many1 $ choice [letter, digit, char ' ', char '>', char '<', char '=']
 
+    _word :: Parser String
+    _word = do
+       w <- many1 $ choice [string "\"", word]
+       return $ concat w
+
     number :: Parser Integer
     number = read <$> many1 digit
 
@@ -39,9 +46,16 @@ module Carrie.Parser.CarrieParser where
 
     line' :: Parser CrStmt
     line' = do
-        l <- choice [parsePrint, parseDec, parseBind, parseAssign, parseFuncCall, parseReturn, parseIf, parseWhile, parseComment]
+        l <- choice [parseMap, parsePrint, parseDec, parseBind, parseAssign, parseFuncCall, parseReturn, parseIf, parseWhile, parseComment]
         optional newline
         return l
+
+    parseList :: Parser CrStmt
+    parseList = do
+        char '|'
+        vals <- many1 $ sepBy1 _word (string ", ")
+        char '|'
+        return $ CrList $ concat vals
 
     parseMath :: Parser CrStmt
     parseMath = do
@@ -97,6 +111,26 @@ module Carrie.Parser.CarrieParser where
         char ';'
         return $ CrDec w (toDataType t)
 
+    parseMap :: Parser CrStmt
+    parseMap = do
+        string "map("
+        f <- word
+        optional spaces
+        char ','
+        optional spaces
+        l <- word
+        optional spaces
+        char ','
+        optional spaces
+        o <- word
+        string ");"
+        return $ CrMap f l o
+
+    parseLiteral :: Parser CrStmt
+    parseLiteral = do
+        char '$'
+        v <- word
+        return $ CrLiteral (show v)
 
     parseAssign :: Parser CrStmt
     parseAssign = do
@@ -106,7 +140,7 @@ module Carrie.Parser.CarrieParser where
         spaces
         string ":="
         spaces
-        name <- parseMath
+        name <- choice [parseMath, parseLiteral, parseList]
         choice [string ";", string ";\n"]
         return $ CrAssign var name
 

@@ -12,9 +12,19 @@ module Carrie.Compiler.CarrieCompiler where
 
   testFactorial = CrFunc "fact" [(CrIntT,"x")] CrIntT [If (Equal "x" "1") [Return "1"],CrAssign "y" (Sub "x" "1"),CrDec "z" CrIntT,CrBind "fact" "y" "z",CrAssign "f" (Mul "z" "x"),Return "f"]
 
+  testList = CrList ["True", "False", "3"]
+
+  testLiteral = CrLiteral "3"
+
   clearFile :: IO ()
   clearFile = do
     writeFile "main.rs" "fn main() {\nprintln!(\"{}\", fact(4));\n}"
+
+  checkList :: String -> String
+  checkList x
+    | x == "False" = "false"
+    | x == "True" = "true"
+    | otherwise = x
 
   -- General type class used for really no reason
 
@@ -33,7 +43,6 @@ module Carrie.Compiler.CarrieCompiler where
     compile (CrInt i) = show i
     compile (CrFloat f) = show f
     compile (CrBool b) = show b
-    compile (CrList l) = concat $ map compile l
     compile (CrNothing n) = "()"
     compile (CrVar n v) = n
     compile (Greater n m) = n ++ " > " ++ m
@@ -61,3 +70,5 @@ module Carrie.Compiler.CarrieCompiler where
                                               ++ "\n}"
     compile (Comment c) = "\n// " ++ c
     compile (CrPrint w) = "println!(\"{}\", " ++ w ++ ");"
+    compile (CrList vs) = "vec!(" ++ (concat (intersperse "," $ map checkList vs)) ++ ");"
+    compile (CrLiteral l) = l

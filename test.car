@@ -1,15 +1,3 @@
-func main() -> Nothing {
-DEC(f, Int);
-bind(fact)(6)(f);
-print(f);
-}
-func fact(Int:x) -> Int {
-if (x == 1) START
-return 1;
-END
-let y := x - 1;
-DEC(z, Int);
-bind(fact)(y)(z);
-let f := z * x;
-return f;
+func main(Bool:x) -> Nothing {
+map(fact, x, y);
 }
