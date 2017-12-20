@@ -5,10 +5,9 @@ module Carrie.Parser.CarrieParser where
     --Written By Henning Tonko ☭
     {-
         TODO:
-        • How to implement std lib functions (print, concat, head/tail, etc) [_]
-        • Add in parsing for lists [X]
+        • Add in parsing for Floats [_]
+        • Add in parsing for Strings [_]
         • Change String reps in CrStmt's to be CrStmt's or CrValue's [_]
-        • Change how assign works [X]
         • Clean up this code (Seperate files or just move around) [_]
     -}
 
@@ -36,8 +35,21 @@ module Carrie.Parser.CarrieParser where
        w <- many1 $ choice [string "\"", word]
        return $ concat w
 
+    wordString :: Parser String
+    wordString = do
+        w <- many1 $ choice [oneOf (['a'..'z']++['A'..'Z']++[' ']), char '"']
+        return $ w
+
     number :: Parser Integer
     number = read <$> many1 digit
+
+    floatNum :: Parser Float
+    floatNum = do
+        num1 <- many1 digit
+        char '.'
+        num2 <- many1 digit
+        let ans = ((show num1) ++ "." ++ (show num2))
+        return $ (read ans :: Float)
 
     line :: Parser String
     line = do
@@ -129,8 +141,9 @@ module Carrie.Parser.CarrieParser where
     parseLiteral :: Parser CrStmt
     parseLiteral = do
         char '$'
-        v <- word
-        return $ CrLiteral (show v)
+        --v <- try floatNum
+        v1 <- try number
+        return $ CrLiteral (show v1)
 
     parseAssign :: Parser CrStmt
     parseAssign = do

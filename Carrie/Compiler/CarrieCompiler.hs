@@ -14,8 +14,6 @@ module Carrie.Compiler.CarrieCompiler where
 
   testList = CrList ["True", "False", "3"]
 
-  testLiteral = CrLiteral "3"
-
   clearFile :: IO ()
   clearFile = do
     writeFile "main.rs" "fn main() {\nprintln!(\"{}\", fact(4));\n}"
